@@ -2,16 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta content="yes" name="apple-mobile-web-app-capable"> 
     <meta content="yes" name="apple-touch-fullscreen"> 
     <meta content="telephone=no,email=no" name="format-detection">
     <title>考勤记录</title>
     <script src="js/flexible.js"></script>
+    <script src='js/record.js'></script>
+    <script src="js/vue.js"></script>
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/record.css">
 </head>
-<body>
-    
+<body >
+    <div id="app">
+            <div class="nowTime" @click="showYearChoose">
+                    <p><span id="fulY">{{headYear}}</span>年<span id="fulM">{{headMonth}}</span>月</p>
+                   
+            </div>
+            <transition name="fade">
+                <div class="chooseBox" v-show='showChoose'>
+                        <div class="yearBox">
+                            <span class="btn btn-left" @click="minus">&lt;</span>
+                            <span class='yearChoose'>{{chooseYear}}</span>
+                            <span class="btn btn-right" @click="plus">&gt;</span>
+                        </div>
+                        <div class="monthList" >
+                            <div class="month" v-for="(item,index) in monthsList" @click="clickMonth(index)">{{item}}</div>
+                        </div>
+                    </div>     
+            </transition>
+            <div class="calendar">
+                <div class="caHeader" ><span v-for='item in weekList'>{{item}}</span></div>
+            </div>
+    </div>
+   
 </body>
+<script>
+let vm = new Vue({
+    el:'#app',
+    data:{
+        monthsList:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+        weekList:['日','一','二','三','四','五','六'],
+        headMonth:3,
+        headYear:2018,
+        chooseYear:2018,
+        showChoose:false
+    },
+    methods:{
+        showYearChoose:function(){
+            this.showChoose = !this.showChoose;
+        },
+        minus:function(){
+            this.chooseYear -=1
+        },
+        plus:function(){
+            this.chooseYear +=1
+        },
+        clickMonth:function(index){
+            this.headMonth = index+1;
+            this.headYear = this.chooseYear;
+            this.showChoose = false;
+        }
+    }  
+})
+</script>
 </html>
